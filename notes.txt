@@ -5,3 +5,33 @@ Internet seems to think it's an incompatibility between the llvm dependency and 
 Going to install from the web using the install script on the home page.
 
 Works
+
+Seems like http is entirely dependent on a package.
+Trying to see if there's a net/http equivalent in rust, something in the stdlib so that I don't need to add dependencies
+
+Seems like in order to do http with the stdlib requires socket reading / writing and the old song and dance
+
+Need to setup my development environment for rust
+
+The logo and color kinda suck
+https://github.com/angles-n-daemons/env/commit/1c41556fdebbbc51e94fbabd79a5eaa8de93167d
+
+Can look into that a bit later
+
+Need to:
+ - compile and run
+ - test
+ - format
+ - debug
+ - debug test
+ - install package
+ - create working http
+
+curl -XPOST --data '{"name": "Gerald"}' http://localhost:5151/hello
+
+Debugging works, but only after cargo build.
+Cargo run seems to generate unrecognized symbols for lldb.
+
+Strangely cargo build and then running the executable seems to work fine, perhaps becuase the debugger is looking at the executable file
+
+Regardless, this can be mitigated by having a build step in a makefile
