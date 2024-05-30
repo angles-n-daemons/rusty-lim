@@ -1,0 +1,7 @@
+Seems like rust is already installed on this computer, compilation fails due to symbol linking
+
+Internet seems to think it's an incompatibility between the llvm dependency and the brew rust installation.
+
+Going to install from the web using the install script on the home page.
+
+Works
