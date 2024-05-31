@@ -19,13 +19,15 @@ https://github.com/angles-n-daemons/env/commit/1c41556fdebbbc51e94fbabd79a5eaa8d
 Can look into that a bit later
 
 Need to:
- - compile and run
- - test
- - format
- - debug
- - debug test
- - install package
+ - compile and run x
+ - test x
+ - format x
+ - debug x
+ - debug test (skipping)
+ - install package x
  - create working http
+   - server
+   - client
 
 curl -XPOST --data '{"name": "Gerald"}' http://localhost:5151/hello
 
@@ -35,3 +37,14 @@ Cargo run seems to generate unrecognized symbols for lldb.
 Strangely cargo build and then running the executable seems to work fine, perhaps becuase the debugger is looking at the executable file
 
 Regardless, this can be mitigated by having a build step in a makefile
+
+The makefile works, I'm going to do to setup the minimum http client and server, then move on to reading about the llm project
+
+A lot of things about the language to digest:
+match statements look similar to pattern matching in haskell, arbitrary variable assignment is interesting.
+
+The language is verbose and likely pretty safe, though there's a lot of constructs to digest at once. For now copying and pasting bits of code seems to work, though I haven't a good idea of how to write it from scratch.
+
+things to look into:
+- generics
+- implementation

@@ -1,5 +1,6 @@
-use bytes::Bytes;
+use super::search;
 use http_body_util::Full;
+use hyper::body::Bytes;
 use hyper::service::Service;
 use hyper::{body::Incoming as IncomingBody, Request, Response};
 
@@ -7,9 +8,12 @@ use std::future::Future;
 use std::pin::Pin;
 
 // What are these derive decorators?
+// Seems like they apply properties to the below struct defn
 #[derive(Debug, Clone)]
-struct Svc {}
+pub struct Svc {}
 
+// Copied from the hyper docs
+// https://github.com/hyperium/hyper/blob/master/examples/service_struct_impl.rs
 impl Service<Request<IncomingBody>> for Svc {
     type Response = Response<Full<Bytes>>;
     type Error = hyper::Error;
@@ -17,37 +21,16 @@ impl Service<Request<IncomingBody>> for Svc {
 
     fn call(&self, req: Request<IncomingBody>) -> Self::Future {
         fn mk_response(s: String) -> Result<Response<Full<Bytes>>, hyper::Error> {
+            let url = "http://httpbin.org/ip".parse::<hyper::Uri>()?;
+            search::call(url);
             Ok(Response::builder().body(Full::new(Bytes::from(s))).unwrap())
         }
 
-        if req.uri().path() != "/favicon.ico" {
-            *self.counter.lock().expect("lock poisoned") += 1;
-        }
-
         let res = match req.uri().path() {
-            "/" => mk_response(format!("home! counter = {:?}", self.counter)),
-            "/posts" => mk_response(format!("posts, of course! counter = {:?}", self.counter)),
-            "/authors" => mk_response(format!(
-                "authors extraordinare! counter = {:?}",
-                self.counter
-            )),
-            _ => mk_response("oh no! not found".into()),
+            "/hello" => mk_response(format!("hit it!")),
+            path => mk_response(format!("{} not found", path)),
         };
 
         Box::pin(async { res })
-    }
-}
-
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
     }
 }
